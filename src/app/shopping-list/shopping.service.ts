@@ -1,4 +1,5 @@
 import { EventEmitter } from '@angular/core';
+
 import { Ingredient } from './../shared/ingredient.model';
 
 export class ShoppingService{
@@ -13,6 +14,11 @@ export class ShoppingService{
 
     addIngredient(newIngredient: Ingredient): void{
         this.ingredients.push(newIngredient);
+        this.shoppingListChanged.emit();
+    }
+
+    addIngredients(newIngredients: Ingredient[]): void{
+        this.ingredients.push(...newIngredients);
         this.shoppingListChanged.emit();
     }
 
