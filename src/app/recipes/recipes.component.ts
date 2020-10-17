@@ -1,5 +1,6 @@
-import { Recipe } from './recipe.model';
 import { Component } from '@angular/core';
+
+import { Recipe } from './recipe.model';
 import { RecipeService } from './recipe.service';
 
 @Component({
@@ -13,7 +14,9 @@ export class RecipesComponent {
 
   constructor(private recipeSrv: RecipeService){
     this.recipeSrv.recipeSelected.subscribe(
-      resipeItm => this.selectedRecipe = resipeItm
+      (resipeItm: Recipe) => {
+        this.selectedRecipe = resipeItm;
+      }
     );
   }
 }
