@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ShoppingService } from './shopping.service';
 import { Ingredient } from './../shared/ingredient.model';
@@ -9,15 +10,19 @@ import { Ingredient } from './../shared/ingredient.model';
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css']
 })
-export class ShoppingListComponent implements OnInit{
+export class ShoppingListComponent implements OnInit, OnDestroy{
   ingredients: Ingredient[];
+  private subscription: Subscription;
 
   constructor(private shoppingSrv: ShoppingService){
-    this.shoppingSrv.shoppingListChanged.subscribe(
+    this.subscription = this.shoppingSrv.shoppingListChanged.subscribe(
       () => {
         this.ingredients = this.shoppingSrv.getIngredients();
       }
     );
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
