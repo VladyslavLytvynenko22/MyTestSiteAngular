@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form 
+        (ngSubmit)="onSubmit()"
+        #frm="ngForm">
+        <div
+          ngModelGroup="userData"
+          #userData="ngModelGroup">
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input 
+              type="email"
+              id="email"
+              class="form-control"
+              required
+              email
+              ngModel
+              #email="ngModel"
+              name="email">
+              <span class="help-block" *ngIf="!email.valid && email.touched">Please enter a valid email!</span>
+          </div>
+          <div class="form-group">
+            <label for="subscriptions">Subscriptions:</label>
+            <select  
+              class="form-control" 
+              id="subscriptions"
+              [ngModel]="defoultSubscriptions"
+              name="subscriptions">
+              <option value="Basic">Basic</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Pro">Pro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+              type="password"
+              id="password"
+              class="form-control"
+              required
+              ngModel
+              password
+              name="password"
+              #password="ngModel">
+              <span class="help-block" *ngIf="!password.valid && password.touched">Please enter a valid password!</span>
+          </div>
+          <button 
+            class="btn btn-primary" 
+            type="submit"
+            [disabled]="!frm.valid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div class="row" *ngIf="submited">
+    <div class="col-xs-12">
+      <h3>Your Data</h3>
+      <p>Mail: {{user.email}}</p>
+      <p>Subscriptions: {{user.subscriptions}}</p>
+      <p>Password: {{user.password}}</p>
+    </div>
+  </div>
+</div>
