@@ -13,7 +13,7 @@ import { ShoppingService } from './../shopping.service';
 export class ShoppingEditComponent implements OnInit, OnDestroy {
   @ViewChild('f', {static: false}) slForm: NgForm;
   private subscription: Subscription;
-  private editMode = false;
+  public editMode = false;
   private editItemIndex: number;
   private editetItem: Ingredient;
 
@@ -42,6 +42,10 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const vlue = form.value;
     const newIngridient = new Ingredient(vlue.name, vlue.amount);
 
-    this.shoppingSrv.addIngredient(newIngridient);
+    if (this.editMode){
+      this.shoppingSrv.updateIngredient(this.editItemIndex, newIngridient);
+    }else{
+      this.shoppingSrv.addIngredient(newIngridient);
+    }
   }
 }
