@@ -38,7 +38,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onAddItem(form: NgForm): void{
+  onSubmit(form: NgForm): void{
     const vlue = form.value;
     const newIngridient = new Ingredient(vlue.name, vlue.amount);
 
@@ -47,5 +47,20 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     }else{
       this.shoppingSrv.addIngredient(newIngridient);
     }
+
+    this.onClear();
   }
+
+  onClear(): void {
+    this.editMode = false;
+    this.slForm.reset();
+  }
+
+  onDelete(): void {
+    this.shoppingSrv.deleteIngredient(this.editItemIndex);
+
+    this.onClear();
+  }
+
+
 }
