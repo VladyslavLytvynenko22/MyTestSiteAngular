@@ -11,6 +11,7 @@ export class ShoppingService{
     ];
 
     public shoppingListChanged = new Subject();
+    public startedEditing = new Subject<number>();
 
     constructor(){}
 
@@ -26,5 +27,9 @@ export class ShoppingService{
 
     getIngredients(): Ingredient[]{
         return this.ingredients.slice();
+    }
+
+    getIngredient(index: number): Ingredient {
+      return this.ingredients[index];
     }
 }
