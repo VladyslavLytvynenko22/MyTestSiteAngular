@@ -33,7 +33,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeName = '';
     let recipeImagePath = '';
     let recipeDescription = '';
-    let recipeIngredients = new FormArray([]);
+    const recipeIngredients = new FormArray([]);
 
     if (this.editMode){
       const recipe = this.recipeSrv.getRecipeById(this.id);
@@ -68,5 +68,15 @@ export class RecipeEditComponent implements OnInit {
 
   get controls(): AbstractControl[] { // a getter!
     return (this.recipeForm.get('ingredients') as FormArray).controls;
+  }
+
+  onAddIngredient(): void {
+    (this.recipeForm.get('ingredients') as FormArray)
+    .push(
+      new FormGroup({
+        name: new FormControl(),
+        amount: new FormControl()
+      })
+    );
   }
 }
