@@ -61,6 +61,4 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
     this.onClear();
   }
-
-
 }
