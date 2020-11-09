@@ -1,8 +1,9 @@
-import { RecipeService } from './../recipe.service';
+import { Ingredient } from './../../shared/ingredient.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { Recipe } from '../recipe.model';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
+
+import { RecipeService } from './../recipe.service';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -32,6 +33,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeName = '';
     let recipeImagePath = '';
     let recipeDescription = '';
+    let recipeIngredients = new FormArray([]);
 
     if (this.editMode){
       const recipe = this.recipeSrv.getRecipeById(this.id);
@@ -39,16 +41,32 @@ export class RecipeEditComponent implements OnInit {
       recipeName = recipe.name;
       recipeImagePath = recipe.imagePath;
       recipeDescription = recipe.description;
+
+      if (recipe.ingredients){
+        for (const ingredient of recipe.ingredients) {
+          recipeIngredients.push(
+            new FormGroup({
+              name: new FormControl(ingredient.name),
+              amount: new FormControl(ingredient.amount)
+            })
+          );
+        }
+      }
     }
 
     this.recipeForm = new FormGroup({
       name: new FormControl(recipeName),
       imageUrl: new FormControl(recipeImagePath),
-      description: new FormControl(recipeDescription)
+      description: new FormControl(recipeDescription),
+      ingredients: recipeIngredients
     });
   }
 
   onSubmit(): void {
     console.log(this.recipeForm);
+  }
+
+  get controls(): AbstractControl[] { // a getter!
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
   }
 }
