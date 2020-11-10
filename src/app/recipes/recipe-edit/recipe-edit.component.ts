@@ -35,7 +35,6 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit(): void {
     if (this.editMode) {
-      console.log(this.recipeForm.value);
       this.recipeSrv.updateRecipe(this.id, this.recipeForm.value);
     } else {
       this.recipeSrv.addRecipe(this.recipeForm.value);
@@ -59,6 +58,16 @@ export class RecipeEditComponent implements OnInit {
 
   returnBack(): void {
     this.router.navigate(['../'], {relativeTo: this.route});
+  }
+
+  onDeleteIngredient(index: number): void {
+    (this.recipeForm.get('ingredients') as FormArray)
+    .removeAt(index);
+  }
+
+  onDeleteAllIngredients(): void {
+    (this.recipeForm.get('ingredients') as FormArray)
+    .clear();
   }
 
   private initForm(): void {
