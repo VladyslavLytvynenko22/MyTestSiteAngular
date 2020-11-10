@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12">
-        <form [formGroup]="recipeForm" (onSubmit)="onSubmit()">
+        <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
             <div class="row">
                 <div class="col-xs-12">
                     <button 
@@ -33,7 +33,7 @@
                             type="url"
                             id="imageUrl"
                             class="form-control"
-                            formControlName="imageUrl">
+                            formControlName="imagePath">
                     </div>
                 </div>
             </div>

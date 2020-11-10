@@ -18,6 +18,10 @@ export class RecipeEditComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private recipeSrv: RecipeService) { }
 
+  get controls(): AbstractControl[] {
+    return (this.recipeForm.get('ingredients') as FormArray).controls;
+  }
+
   ngOnInit(): void {
     this.route.params
       .subscribe(
@@ -26,6 +30,28 @@ export class RecipeEditComponent implements OnInit {
           this.editMode = params.id != null;
           this.initForm();
         }
+    );
+  }
+
+  onSubmit(): void {
+    if (this.editMode) {
+      console.log(this.recipeForm.value);
+      this.recipeSrv.updateRecipe(this.id, this.recipeForm.value);
+    } else {
+      this.recipeSrv.addRecipe(this.recipeForm.value);
+    }
+  }
+
+  onAddIngredient(): void {
+    (this.recipeForm.get('ingredients') as FormArray)
+    .push(
+      new FormGroup({
+        name: new FormControl(null, Validators.required),
+        amount: new FormControl(null, [
+          Validators.required,
+          Validators.pattern(/^[1-9]+[0-9]*$/)
+        ])
+      })
     );
   }
 
@@ -59,30 +85,9 @@ export class RecipeEditComponent implements OnInit {
 
     this.recipeForm = new FormGroup({
       name: new FormControl(recipeName, Validators.required),
-      imageUrl: new FormControl(recipeImagePath, Validators.required),
+      imagePath: new FormControl(recipeImagePath, Validators.required),
       description: new FormControl(recipeDescription, Validators.required),
       ingredients: recipeIngredients
     });
-  }
-
-  onSubmit(): void {
-    console.log(this.recipeForm);
-  }
-
-  get controls(): AbstractControl[] {
-    return (this.recipeForm.get('ingredients') as FormArray).controls;
-  }
-
-  onAddIngredient(): void {
-    (this.recipeForm.get('ingredients') as FormArray)
-    .push(
-      new FormGroup({
-        name: new FormControl(null, Validators.required),
-        amount: new FormControl(null, [
-          Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/)
-        ])
-      })
-    );
   }
 }
