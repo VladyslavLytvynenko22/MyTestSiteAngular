@@ -33,6 +33,8 @@ export class AppComponent {
     }
   ];
 
+  public filteredStatus = '';
+
   getStatusClasses(server: {instanceType: string, name: string, status: string, started: Date}): {
     'list-group-item-success': boolean;
     'list-group-item-warning': boolean;
@@ -43,5 +45,14 @@ export class AppComponent {
       'list-group-item-warning': server.status === 'offline',
       'list-group-item-danger': server.status === 'critical'
     };
+  }
+
+  onAddServer(): void {
+    this.servers.push({
+      instanceType: 'small',
+      name: 'New Server',
+      status: 'stable',
+      started: new Date(15, 1, 2017)
+    });
   }
 }
