@@ -1,3 +1,4 @@
+import { PostService } from './post.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DayViewModel } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
@@ -13,48 +14,23 @@ export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isFetching = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private postSrv: PostService) {}
 
   ngOnInit(): void {
-    this.fetchPost();
+    this.postSrv.fetchPost();
   }
 
   onCreatePost(postData: Post): void {
     // Send Http request
-    this.http.post<{name: string}>(
-      'https://mytest1-320c9.firebaseio.com/posts.json',
-      postData
-    ).subscribe(responseData => {
-      console.log(responseData);
-    });
+    this.postSrv.createAndStorePost(postData.title, postData.content);
   }
 
   onFetchPosts(): void {
     // Send Http request
-    this.fetchPost();
+    this.postSrv.fetchPost();
   }
 
   onClearPosts(): void {
     // Send Http request
-  }
-
-  private fetchPost(): void {
-    this.isFetching = true;
-    this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json')
-      .pipe(
-        map(responseData => {
-          const postsAray: Post[] = [];
-          for (const key in responseData) {
-            if (responseData.hasOwnProperty(key)){
-              postsAray.push({...responseData[key], id: key});
-            }
-          }
-          return postsAray;
-        })
-      )
-      .subscribe(post => {
-        this.isFetching = false;
-        this.loadedPosts = post;
-      });
   }
 }
