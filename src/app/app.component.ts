@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DayViewModel } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
 import { map } from 'rxjs/operators';
+import { Post } from './post.model';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +18,9 @@ export class AppComponent implements OnInit {
     this.fetchPost();
   }
 
-  onCreatePost(postData: { title: string; content: string }): void {
+  onCreatePost(postData: Post): void {
     // Send Http request
-    this.http.post(
+    this.http.post<{name: string}>(
       'https://mytest1-320c9.firebaseio.com/posts.json',
       postData
     ).subscribe(responseData => {
@@ -37,11 +38,10 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPost(): void {
-    this.http.get(
-      'https://mytest1-320c9.firebaseio.com/posts.json')
+    this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json')
       .pipe(
         map(responseData => {
-          const postsAray = [];
+          const postsAray: Post[] = [];
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)){
               postsAray.push({...responseData[key], id: key});
