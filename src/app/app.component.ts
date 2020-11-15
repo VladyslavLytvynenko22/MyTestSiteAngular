@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DayViewModel } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -35,9 +36,20 @@ export class AppComponent implements OnInit {
     // Send Http request
   }
 
-  private fetchPost() {
+  private fetchPost(): void {
     this.http.get(
       'https://mytest1-320c9.firebaseio.com/posts.json')
+      .pipe(
+        map(responseData => {
+          const postsAray = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)){
+              postsAray.push({...responseData[key], id: key});
+            }
+          }
+          return postsAray;
+        })
+      )
       .subscribe(post => {
         console.log(post);
       });
