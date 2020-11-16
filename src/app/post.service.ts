@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
@@ -26,7 +26,11 @@ export class PostService {
     }
 
     fetchPost(): Observable<Post[]> {
-        return this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json')
+        return this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json',
+            {
+                headers: new HttpHeaders({'Custom-Heder': 'Hello'})
+            }
+        )
         .pipe(
           map(responseData => {
             const postsAray: Post[] = [];
