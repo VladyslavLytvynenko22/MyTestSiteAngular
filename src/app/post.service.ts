@@ -9,15 +9,13 @@ export class PostService {
 
     constructor(private http: HttpClient){}
 
-    createAndStorePost(title: string, content: string): void {
+    createAndStorePost(title: string, content: string): Observable<{ name: string; }> {
         const postData: Post = { title, content };
 
-        this.http.post<{name: string}>(
+        return this.http.post<{name: string}>(
             'https://mytest1-320c9.firebaseio.com/posts.json',
             postData
-          ).subscribe(responseData => {
-            console.log(responseData);
-          });
+          );
     }
 
     fetchPost(): Observable<Post[]> {
@@ -33,5 +31,9 @@ export class PostService {
             return postsAray;
           })
         );
+    }
+
+    deletePosts(): Observable<object> {
+        return this.http.delete('https://mytest1-320c9.firebaseio.com/posts.json');
     }
 }
