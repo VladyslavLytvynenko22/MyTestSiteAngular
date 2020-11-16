@@ -2,6 +2,7 @@ import { Post } from './post.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({providedIn: 'root'})
 export class PostService {
@@ -19,8 +20,8 @@ export class PostService {
           });
     }
 
-    fetchPost(): void {
-        this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json')
+    fetchPost(): Observable<Post[]> {
+        return this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json')
         .pipe(
           map(responseData => {
             const postsAray: Post[] = [];
@@ -31,8 +32,6 @@ export class PostService {
             }
             return postsAray;
           })
-        )
-        .subscribe(post => {
-        });
+        );
     }
 }
