@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
-import { Subject } from 'rxjs';
+import { Subject, throwError } from 'rxjs';
 
 import { Post } from './post.model';
 
@@ -36,6 +36,9 @@ export class PostService {
               }
             }
             return postsAray;
+          }), catchError( errorRes => {
+              // Sent to analytics
+              return throwError(errorRes);
           })
         );
     }
