@@ -1,8 +1,8 @@
 import { PostService } from './post.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DayViewModel } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
-import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+
 import { Post } from './post.model';
 
 @Component({
@@ -10,14 +10,23 @@ import { Post } from './post.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   loadedPosts: Post[] = [];
   isFetching = false;
   error = null;
+  errorSubscription: Subscription;
 
   constructor(private http: HttpClient, private postSrv: PostService) {}
 
+  ngOnDestroy(): void {
+    this.errorSubscription.unsubscribe();
+  }
+
   ngOnInit(): void {
+    this.errorSubscription = this.postSrv.error.subscribe(error => {
+      this.error = error;
+    });
+
     this.isFetching = true;
     this.postSrv.fetchPost().subscribe(post => {
       this.isFetching = false;
@@ -29,11 +38,7 @@ export class AppComponent implements OnInit {
 
   onCreatePost(postData: Post): void {
     // Send Http request
-    this.postSrv.createAndStorePost(postData.title, postData.content)
-    .subscribe(responseData => {
-      this.onFetchPosts();
-      console.log(responseData);
-    });
+    this.postSrv.createAndStorePost(postData.title, postData.content);
   }
 
   onFetchPosts(): void {
