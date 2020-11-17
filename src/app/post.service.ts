@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
@@ -26,9 +26,14 @@ export class PostService {
     }
 
     fetchPost(): Observable<Post[]> {
+        let searchParams = new HttpParams();
+        searchParams = searchParams.append('print', 'pretty');
+        searchParams = searchParams.append('custom', 'key');
+
         return this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json',
             {
-                headers: new HttpHeaders({'Custom-Heder': 'Hello'})
+                headers: new HttpHeaders({'Custom-Heder': 'Hello'}),
+                params: searchParams
             }
         )
         .pipe(
