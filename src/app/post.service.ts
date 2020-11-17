@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subject, throwError } from 'rxjs';
 
@@ -17,7 +17,10 @@ export class PostService {
 
         this.http.post<{name: string}>(
             'https://mytest1-320c9.firebaseio.com/posts.json',
-            postData
+            postData,
+            {
+                observe: 'response'
+            }
           ).subscribe(responseData => {
             console.log(responseData);
           }, error => {
@@ -33,7 +36,8 @@ export class PostService {
         return this.http.get<{ [key: string]: Post}>('https://mytest1-320c9.firebaseio.com/posts.json',
             {
                 headers: new HttpHeaders({'Custom-Heder': 'Hello'}),
-                params: searchParams
+                params: searchParams,
+                responseType: 'json'
             }
         )
         .pipe(
@@ -53,6 +57,20 @@ export class PostService {
     }
 
     deletePosts(): Observable<object> {
-        return this.http.delete('https://mytest1-320c9.firebaseio.com/posts.json');
+        return this.http.delete('https://mytest1-320c9.firebaseio.com/posts.json',
+        {
+            observe: 'events',
+            responseType: 'text'
+        })
+        .pipe(
+            tap((event: any) => {
+                console.log(event);
+                if (event.type === HttpEventType.Sent){
+                    // ---
+                }
+                if (event.type === HttpEventType.Response){
+                    console.log(event.body);
+                }
+        }));
     }
 }
