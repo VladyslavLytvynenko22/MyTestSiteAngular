@@ -39,7 +39,7 @@ import { RecipeService } from './recipes/recipe.service';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [ShoppingService, RecipeService],
