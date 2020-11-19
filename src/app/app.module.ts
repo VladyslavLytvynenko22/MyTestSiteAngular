@@ -1,3 +1,4 @@
+import { LoggingIntercetorService } from './logging-intercetor.service';
 import { AuthInterceptorService } from './auth-intercetor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -9,9 +10,18 @@ import { AppComponent } from './app.component';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule],
-  providers: [{provide: HTTP_INTERCEPTORS,
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
      useClass: AuthInterceptorService,
-     multi: true}],
+     multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+     useClass: LoggingIntercetorService,
+     multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
