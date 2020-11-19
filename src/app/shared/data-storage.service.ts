@@ -1,9 +1,10 @@
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { RecipeService } from './../recipes/recipe.service';
 import { Recipe } from './../recipes/recipe.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Ingredient } from './ingredient.model';
 
 @Injectable({providedIn: 'root'})
 export class DataStorageService {
@@ -19,8 +20,8 @@ export class DataStorageService {
         );
     }
 
-    fetchRecipe(): void {
-        this.http.get<Recipe[]>('https://mytest1-320c9.firebaseio.com/recipes.json')
+    fetchRecipe(): Observable<{ ingredients: Ingredient[]; name: string; description: string; imagePath: string; }[]> {
+        return this.http.get<Recipe[]>('https://mytest1-320c9.firebaseio.com/recipes.json')
         .pipe(
             map(
                 recipes => {
@@ -31,12 +32,12 @@ export class DataStorageService {
                         };
                     });
                 }
+            ),
+            tap(
+                recipes => {
+                    this.recipeService.setRecipes(recipes);
+                }
             )
-        )
-        .subscribe(
-            recipes => {
-                this.recipeService.setRecipes(recipes);
-            }
         );
     }
 }
