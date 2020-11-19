@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { RecipeService } from './../recipes/recipe.service';
 import { Recipe } from './../recipes/recipe.model';
@@ -20,6 +21,18 @@ export class DataStorageService {
 
     fetchRecipe(): void {
         this.http.get<Recipe[]>('https://mytest1-320c9.firebaseio.com/recipes.json')
+        .pipe(
+            map(
+                recipes => {
+                    return recipes.map(recipe => {
+                        return {
+                            ...recipe,
+                             ingredients: recipe.ingredients ? recipe.ingredients : []
+                        };
+                    });
+                }
+            )
+        )
         .subscribe(
             recipes => {
                 this.recipeService.setRecipes(recipes);
