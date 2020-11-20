@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 import { Component } from '@angular/core';
 
 @Component({
@@ -9,5 +10,9 @@ export class AuthComponent {
 
     onSwitch(): void {
         this.isLogIn = !this.isLogIn;
+    }
+
+    onSubmit(form: NgForm): void{
+        console.log(form);
     }
 }
