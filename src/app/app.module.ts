@@ -1,4 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -46,7 +47,15 @@ import { RecipeService } from './recipes/recipe.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [ShoppingService, RecipeService],
+  providers: [
+    ShoppingService,
+    RecipeService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
