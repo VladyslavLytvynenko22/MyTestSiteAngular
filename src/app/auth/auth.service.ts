@@ -11,6 +11,7 @@ import { User } from './user.model';
 @Injectable({providedIn: 'root'})
 export class AuthService {
     user = new BehaviorSubject<User>(null);
+    private tokenExpirationTimer: any;
 
     constructor(private http: HttpClient, private router: Router){}
 
@@ -36,6 +37,8 @@ export class AuthService {
         const expitationDate = new Date(new Date().getTime() + expiresIn * 1000);
         const user = new User(email, userId, token, expitationDate);
         this.user.next(user);
+        this.autoLogOut(expiresIn * 1000);
+        localStorage.setItem('userData', JSON.stringify(user));
     }
 
     logIn(email: string, password: string): Observable<AuthResponce> {
@@ -56,9 +59,35 @@ export class AuthService {
         );
     }
 
+    autoLogIn(): void {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        let user: User = null;
+
+        if (userData){
+            user = Object.setPrototypeOf(userData, User.prototype);
+        }
+
+        if (user && user.token){
+            this.user.next(user);
+            this.autoLogOut(user.expirationDuration);
+        }
+    }
+
     logOut(): void {
         this.user.next(null);
         this.router.navigate(['/auth']);
+        localStorage.removeItem('userData');
+        if (this.tokenExpirationTimer) {
+            clearTimeout(this.tokenExpirationTimer);
+        }
+
+        this.tokenExpirationTimer = null;
+    }
+
+    autoLogOut(expirationDuration: number): void {
+        this.tokenExpirationTimer = setTimeout(() => {
+            this.logOut();
+        }, expirationDuration);
     }
 
     private handleError(errorRes: HttpErrorResponse): Observable<never> {
