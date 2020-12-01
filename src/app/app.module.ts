@@ -18,6 +18,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { AlertComponent } from './shared/alert/alert.component';
 
 import { DropdownDirective } from './shared/dropdown.directive';
+import { PlaceholderDirective } from './shared/placeholder/placeholder.directive';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -40,7 +41,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     RecipeEditComponent,
     AuthComponent,
     LoadingSpinnerComponent,
-    AlertComponent
+    AlertComponent,
+    PlaceholderDirective
    ],
   imports: [
     BrowserModule,
@@ -58,6 +60,9 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    AlertComponent
+  ]
 })
 export class AppModule { }
