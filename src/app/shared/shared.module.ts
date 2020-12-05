@@ -7,6 +7,8 @@ import { PlaceholderDirective } from './placeholder/placeholder.directive';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { AlertComponent } from './alert/alert.component';
 
+import { LoggingService } from '../logging.service';
+
 @NgModule({
     declarations: [
         AlertComponent,
@@ -26,6 +28,9 @@ import { AlertComponent } from './alert/alert.component';
     ],
     entryComponents: [
         AlertComponent
+    ],
+    providers: [
+        LoggingService
     ]
 })
 export class SharedModule {
