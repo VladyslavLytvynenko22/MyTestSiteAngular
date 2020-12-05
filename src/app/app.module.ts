@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -11,17 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { SharedModule } from './shared/shared.module';
-
-import { ShoppingService } from './shopping-list/shopping.service';
-import { RecipeService } from './recipes/recipe.service';
-import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { CoreModule } from './core.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     AuthComponent,
-   ],
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -29,16 +26,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     AppRoutingModule,
     RecipesModule,
     ShoppingListModule,
-    SharedModule
-  ],
-  providers: [
-    ShoppingService,
-    RecipeService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptorService,
-      multi: true
-    }
+    SharedModule,
+    CoreModule
   ],
   bootstrap: [AppComponent]
 })
