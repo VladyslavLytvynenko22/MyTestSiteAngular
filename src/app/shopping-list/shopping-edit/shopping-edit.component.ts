@@ -48,7 +48,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const newIngridient = new Ingredient(vlue.name, vlue.amount);
 
     if (this.editMode){
-      this.shoppingSrv.updateIngredient(this.editItemIndex, newIngridient);
+      this.store.dispatch(new ShoppingListActions.UpdateIngredient({index: this.editItemIndex, ingredient: newIngridient}));
     }else{
       this.store.dispatch(new ShoppingListActions.AddIngredient(newIngridient));
     }
@@ -62,8 +62,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    this.shoppingSrv.deleteIngredient(this.editItemIndex);
-
+    this.store.dispatch(new ShoppingListActions.DeleteIngredient(this.editItemIndex));
     this.onClear();
   }
 }
