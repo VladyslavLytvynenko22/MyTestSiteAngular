@@ -1,13 +1,17 @@
-import { PlaceholderDirective } from './../shared/placeholder/placeholder.directive';
-import { AlertComponent } from './../shared/alert/alert.component';
-import { Observable } from 'rxjs/internal/Observable';
-import { NgForm } from '@angular/forms';
 import { Component, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subscription } from 'rxjs/internal/Subscription';
+import { Observable } from 'rxjs/internal/Observable';
+
+import { PlaceholderDirective } from './../shared/placeholder/placeholder.directive';
+
+import { AlertComponent } from './../shared/alert/alert.component';
+
 import { AuthResponce } from './authResult.model';
+
 import { AuthService } from './auth.service';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-auth',

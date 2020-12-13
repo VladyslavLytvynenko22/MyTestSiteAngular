@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+
 import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
@@ -26,6 +27,5 @@ import { shoppingListReducer } from './shopping-list/store/shopping-list.reducer
     CoreModule
   ],
   bootstrap: [AppComponent]
-  // ,providers: [LoggingService]
 })
 export class AppModule { }

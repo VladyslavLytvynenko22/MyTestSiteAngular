@@ -1,6 +1,4 @@
-import { EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
-
+import { Subject } from 'rxjs/internal/Subject';
 
 import { Ingredient } from './../shared/ingredient.model';
 
@@ -9,7 +7,6 @@ export class ShoppingService{
         new Ingredient('Tomato', 20),
         new Ingredient('Patties', 3)
     ];
-
     public shoppingListChanged = new Subject();
     public startedEditing = new Subject<number>();
 

@@ -16,6 +16,4 @@ import { ShoppingService } from './shopping-list/shopping.service';
         }
     ]
 })
-export class CoreModule {
-
-}
+export class CoreModule {}

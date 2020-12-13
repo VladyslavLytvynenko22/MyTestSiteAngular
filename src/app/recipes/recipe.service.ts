@@ -18,8 +18,7 @@ export class RecipeService {
 
     private recipes: Recipe[];
 
-    constructor(private shoppingSrv: ShoppingService,
-                private store: Store<fromShoppingList.AppState>){}
+    constructor(private store: Store<fromShoppingList.AppState>){}
 
     setRecipes(recipes: Recipe[]): void {
         this.recipes = recipes;

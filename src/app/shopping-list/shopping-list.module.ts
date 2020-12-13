@@ -17,8 +17,5 @@ import { SharedModule } from './../shared/shared.module';
         ShoppingListRoutingModule,
         SharedModule
     ]
-    // ,providers: [LoggingService]
 })
-export class ShoppingListModule {
-
-}
+export class ShoppingListModule {}

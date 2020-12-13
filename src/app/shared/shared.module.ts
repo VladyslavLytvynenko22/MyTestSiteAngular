@@ -33,6 +33,4 @@ import { LoggingService } from '../logging.service';
         LoggingService
     ]
 })
-export class SharedModule {
-
-}
+export class SharedModule {}
