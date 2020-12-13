@@ -4,8 +4,6 @@ import { Store } from '@ngrx/store';
 
 import { Subject } from 'rxjs/internal/Subject';
 
-import { ShoppingService } from './../shopping-list/shopping.service';
-
 import { Ingredient } from '../shared/ingredient.model';
 import { Recipe } from './recipe.model';
 
