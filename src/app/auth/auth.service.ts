@@ -1,20 +1,14 @@
 import { Router } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 import { Store } from '@ngrx/store';
-
-import { Observable } from 'rxjs/internal/Observable';
-import { throwError } from 'rxjs/internal/observable/throwError';
+import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { AuthResponce } from './authResult.model';
 import { User } from './user.model';
-
 import { environment } from 'src/environments/environment';
-
 import * as fromApp from '../store/app.reducer';
-
 import * as AuthActions from './store/auth.actions';
 
 @Injectable({providedIn: 'root'})
