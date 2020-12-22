@@ -40,7 +40,7 @@ export class AuthService {
     private handleAuthentication(email: string, userId: string, token: string, expiresIn: number): void {
         const expitationDate = new Date(new Date().getTime() + expiresIn * 1000);
         const user = new User(email, userId, token, expitationDate);
-        this.store.dispatch(new AuthActions.Login(user));
+        this.store.dispatch(new AuthActions.AuthenticateSuccess(user));
         this.autoLogOut(expiresIn * 1000);
         localStorage.setItem('userData', JSON.stringify(user));
     }
@@ -70,7 +70,7 @@ export class AuthService {
             const user = Object.setPrototypeOf(userData, User.prototype);
 
             if (user && user.token){
-                this.store.dispatch(new AuthActions.Login(user));
+                this.store.dispatch(new AuthActions.AuthenticateSuccess(user));
                 this.autoLogOut(user.expirationDuration);
             }
         }
