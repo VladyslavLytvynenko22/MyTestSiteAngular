@@ -6,23 +6,20 @@ import * as AuthActions from './store/auth.actions';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    private tokenExpirationTimer: NodeJS.Timeout;
+    private tokenExpirationTimer: any;
 
     constructor(private store: Store<fromApp.AppState>) {}
 
-    logOut(): void {
-        this.store.dispatch(new AuthActions.Logout());
-        localStorage.removeItem('userData');
-        if (this.tokenExpirationTimer) {
-            clearTimeout(this.tokenExpirationTimer);
-        }
-
-        this.tokenExpirationTimer = null;
+    public setLogoutTimer(expirationDuration: number): void {
+        this.tokenExpirationTimer = setTimeout(() => {
+            this.store.dispatch(new AuthActions.Logout());
+        }, expirationDuration);
     }
 
-    autoLogOut(expirationDuration: number): void {
-        this.tokenExpirationTimer = setTimeout(() => {
-            this.logOut();
-        }, expirationDuration);
+    public clearLogoutTimer(): void {
+        if (this.tokenExpirationTimer) {
+            clearTimeout(this.tokenExpirationTimer);
+            this.tokenExpirationTimer = null;
+        }
     }
 }

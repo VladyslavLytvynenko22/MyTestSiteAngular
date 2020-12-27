@@ -6,9 +6,10 @@ import { of } from 'rxjs';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { AuthResponce } from '../authResult.model';
-import { User } from '../user.model';
+import { AuthResponce } from './../authResult.model';
+import { User } from './../user.model';
 import * as AuthActions from './auth.actions';
+import { AuthService } from './../auth.service';
 
 const handleAuthentication = (expiresIn: number,
                               email: string,
@@ -54,6 +55,9 @@ export class AuthEffects {
                     returnSecureToken: true
                 }
             ).pipe(
+                tap(resData => {
+                    this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+                }),
                 map(resData => {
                     return handleAuthentication(+resData.expiresIn,
                                         resData.email,
@@ -79,6 +83,9 @@ export class AuthEffects {
                     returnSecureToken: true
                 }
             ).pipe(
+               tap(resData => {
+                   this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+                }),
                 map(resData => {
                     return handleAuthentication(+resData.expiresIn,
                                         resData.email,
@@ -94,14 +101,16 @@ export class AuthEffects {
 
     @Effect({dispatch: false})
     authRedirect = this.actions$.pipe(
-        ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT),
+        ofType(AuthActions.AUTHENTICATE_SUCCESS),
         tap(() => {
             this.router.navigate(['/']);
     }));
 
     @Effect({dispatch: false})
     authLogout = this.actions$.pipe(ofType(AuthActions.LOGOUT), tap(() => {
+        this.authService.clearLogoutTimer();
         localStorage.removeItem('userData');
+        this.router.navigate(['/auth']);
     }));
 
     @Effect()
@@ -114,8 +123,8 @@ export class AuthEffects {
                 const loadedUser = Object.setPrototypeOf(localStorageUser, User.prototype);
 
                 if (loadedUser && loadedUser.token){
+                    this.authService.setLogoutTimer(loadedUser.expirationDuration);
                     return new AuthActions.AuthenticateSuccess(loadedUser);
-                    // this.autoLogOut(loadedUser.expirationDuration);
                 }
             }
 
@@ -125,5 +134,6 @@ export class AuthEffects {
 
     constructor(private actions$: Actions,
                 private http: HttpClient,
-                private router: Router) {}
+                private router: Router,
+                private authService: AuthService) {}
 }
