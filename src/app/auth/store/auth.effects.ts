@@ -16,6 +16,7 @@ const handleAuthentication = (expiresIn: number,
                               token: string) => {
     const expitationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expitationDate);
+    localStorage.setItem('userData', JSON.stringify(user));
     return new AuthActions.AuthenticateSuccess(user);
 };
 
@@ -97,6 +98,30 @@ export class AuthEffects {
         tap(() => {
             this.router.navigate(['/']);
     }));
+
+    @Effect({dispatch: false})
+    authLogout = this.actions$.pipe(ofType(AuthActions.LOGOUT), tap(() => {
+        localStorage.removeItem('userData');
+    }));
+
+    @Effect()
+    autoLogin = this.actions$.pipe(
+        ofType(AuthActions.AUTO_LOGIN),
+        map(() => {
+            const localStorageUser = JSON.parse(localStorage.getItem('userData'));
+
+            if (localStorageUser){
+                const loadedUser = Object.setPrototypeOf(localStorageUser, User.prototype);
+
+                if (loadedUser && loadedUser.token){
+                    return new AuthActions.AuthenticateSuccess(loadedUser);
+                    // this.autoLogOut(loadedUser.expirationDuration);
+                }
+            }
+
+            return { type: 'DUMMY' };
+        })
+    );
 
     constructor(private actions$: Actions,
                 private http: HttpClient,
