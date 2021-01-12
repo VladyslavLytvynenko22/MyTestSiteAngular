@@ -3,12 +3,14 @@ import { User } from './../user.model';
 
 export interface State {
     user: User;
+    redirect: boolean;
     authError: string;
     loading: boolean;
 }
 
 const initialState: State = {
     user: null,
+    redirect: true,
     authError: null,
     loading: false
 };
@@ -17,11 +19,13 @@ export function authReducer(state = initialState,
                             action: AuthActions.AuthActions): any {
     switch (action.type) {
         case AuthActions.AUTHENTICATE_SUCCESS:
-            const user = action.payload;
+            const user: User = action.payload.user;
+            const redirect: boolean = action.payload.redirect;
             return {
                 ...state,
-                authError: null,
                 user,
+                redirect,
+                authError: null,
                 loading: false
             };
         case AuthActions.LOGOUT:

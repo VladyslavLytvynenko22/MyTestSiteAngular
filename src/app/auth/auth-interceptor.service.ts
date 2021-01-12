@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { take, exhaustMap, map } from 'rxjs/operators';
 
 import * as fromApp from '../store/app.reducer';
+import { User } from './user.model';
 
 @Injectable()
 export class AuthInterceptorService implements HttpInterceptor {
@@ -16,7 +17,7 @@ export class AuthInterceptorService implements HttpInterceptor {
             map(authState => {
                 return authState.user;
             }),
-            exhaustMap(user => {
+            exhaustMap((user: User) => {
                 if (!user){
                     return next.handle(req);
                 }
