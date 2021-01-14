@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
     template: '<div class="loader">Loading...</div>',
     styleUrls: ['./loading-spinner.component.css']
 })
-export class LoadingSpinnerComponent {
-
-}
+export class LoadingSpinnerComponent {}

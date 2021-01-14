@@ -8,6 +8,6 @@ export class DropdownDirective {
   @HostListener('click') toggleOpen(): void{
     this.isOpen = !this.isOpen;
   }
-  constructor() { }
 
+  constructor() { }
 }
