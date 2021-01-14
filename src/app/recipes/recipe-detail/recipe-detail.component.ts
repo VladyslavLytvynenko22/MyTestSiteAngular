@@ -5,7 +5,7 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { Recipe } from './../recipe.model';
 import * as fromApp from '../../store/app.reducer';
-import * as RecipeActions from '../store/recipe.actions';
+import * as RecipesActions from '../store/recipe.actions';
 import * as ShoppingListActions from '../../shopping-list/store/shopping-list.actions';
 
 @Component({
@@ -37,15 +37,17 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   addToShoppingList(): void{
-    this.store.dispatch(new ShoppingListActions.AddIngredients(this.recipe.ingredients));
+    this.store.dispatch(
+      ShoppingListActions.addIngredients({ingredients: this.recipe.ingredients})
+    );
   }
 
   onEditRecipe(): void{
-    this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
+    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
   onDeleteRecipe(): void {
-    this.store.dispatch(new RecipeActions.DeleteRecipe(this.id));
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.store.dispatch(RecipesActions.deleteRecipe({index: this.id}));
+    this.router.navigate(['/recipes']);
   }
 }

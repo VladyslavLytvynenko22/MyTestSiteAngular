@@ -34,21 +34,18 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.params
-      .subscribe(
-        (params: Params) => {
-          this.id = +params.id;
-          this.editMode = params.id != null;
-          this.initForm();
-        }
-    );
+    this.route.params.subscribe((params: Params) => {
+      this.id = +params.id;
+      this.editMode = params.id != null;
+      this.initForm();
+    });
   }
 
   onSubmit(): void {
     if (this.editMode) {
-      this.store.dispatch(new RecipesActions.UpdateRecipe({ index: this.id, newRecipe: this.recipeForm.value}));
+      this.store.dispatch(RecipesActions.updateRecipe({index: this.id, recipe: this.recipeForm.value}));
     } else {
-      this.store.dispatch(new RecipesActions.AddRecipe(this.recipeForm.value));
+      this.store.dispatch(RecipesActions.addRecipe({recipe: this.recipeForm.value}));
     }
 
     this.returnBack();

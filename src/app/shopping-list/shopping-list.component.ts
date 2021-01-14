@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Store } from '@ngrx/store';
-
 import { Observable } from 'rxjs/internal/Observable';
 
 import { LoggingService } from '../logging.service';
-
 import { Ingredient } from './../shared/ingredient.model';
-
 import * as ShoppingListActions from './store/shopping-list.actions';
-
 import * as fromApp from '../store/app.reducer';
 
 @Component({
@@ -30,6 +25,6 @@ export class ShoppingListComponent implements OnInit {
   }
 
   onEditItem(index: number): void {
-    this.store.dispatch(new ShoppingListActions.StartEdit(index));
+    this.store.dispatch(ShoppingListActions.startEdit({index}));
   }
 }
